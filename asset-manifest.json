@@ -1,23 +1,22 @@
 {
   "files": {
-    "main.css": "/strategy-tester/static/css/main.a617e044.chunk.css",
-    "main.js": "/strategy-tester/static/js/main.d5bd629d.chunk.js",
-    "main.js.map": "/strategy-tester/static/js/main.d5bd629d.chunk.js.map",
-    "runtime-main.js": "/strategy-tester/static/js/runtime-main.a242e220.js",
-    "runtime-main.js.map": "/strategy-tester/static/js/runtime-main.a242e220.js.map",
-    "static/js/2.e1984865.chunk.js": "/strategy-tester/static/js/2.e1984865.chunk.js",
-    "static/js/2.e1984865.chunk.js.map": "/strategy-tester/static/js/2.e1984865.chunk.js.map",
-    "static/js/3.c3f36394.chunk.js": "/strategy-tester/static/js/3.c3f36394.chunk.js",
-    "static/js/3.c3f36394.chunk.js.map": "/strategy-tester/static/js/3.c3f36394.chunk.js.map",
+    "main.css": "/strategy-tester/static/css/main.106baaae.chunk.css",
+    "main.js": "/strategy-tester/static/js/main.b70c1d24.chunk.js",
+    "main.js.map": "/strategy-tester/static/js/main.b70c1d24.chunk.js.map",
+    "runtime-main.js": "/strategy-tester/static/js/runtime-main.a729a31a.js",
+    "runtime-main.js.map": "/strategy-tester/static/js/runtime-main.a729a31a.js.map",
+    "static/js/2.b299bbe4.chunk.js": "/strategy-tester/static/js/2.b299bbe4.chunk.js",
+    "static/js/2.b299bbe4.chunk.js.map": "/strategy-tester/static/js/2.b299bbe4.chunk.js.map",
+    "static/js/3.1b806bca.chunk.js": "/strategy-tester/static/js/3.1b806bca.chunk.js",
+    "static/js/3.1b806bca.chunk.js.map": "/strategy-tester/static/js/3.1b806bca.chunk.js.map",
     "index.html": "/strategy-tester/index.html",
-    "static/css/main.a617e044.chunk.css.map": "/strategy-tester/static/css/main.a617e044.chunk.css.map",
-    "static/js/2.e1984865.chunk.js.LICENSE.txt": "/strategy-tester/static/js/2.e1984865.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/strategy-tester/static/media/logo.6ce24c58.svg"
+    "static/css/main.106baaae.chunk.css.map": "/strategy-tester/static/css/main.106baaae.chunk.css.map",
+    "static/js/2.b299bbe4.chunk.js.LICENSE.txt": "/strategy-tester/static/js/2.b299bbe4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.a242e220.js",
-    "static/js/2.e1984865.chunk.js",
-    "static/css/main.a617e044.chunk.css",
-    "static/js/main.d5bd629d.chunk.js"
+    "static/js/runtime-main.a729a31a.js",
+    "static/js/2.b299bbe4.chunk.js",
+    "static/css/main.106baaae.chunk.css",
+    "static/js/main.b70c1d24.chunk.js"
   ]
 }
