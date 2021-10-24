@@ -1,5 +1,5 @@
 import React from "react";
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import "./App.css";
 
