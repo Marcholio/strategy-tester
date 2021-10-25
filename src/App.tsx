@@ -1,28 +1,79 @@
-import React from "react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import React, { useState } from "react";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import sp500 from "./data/SXR8.FRK.json";
 
 import "./App.css";
+import { AlphavantageApiResponse, GraphData } from "./types";
 
-const App = () => (
-  <div className="main">
-    <LineChart
-      data={[
-        { name: "1", a: 1, b: 2 },
-        { name: "2", a: 2, b: 4 },
-        { name: "3", a: 3, b: 6 },
-        { name: "4", a: 4, b: 8 },
-        { name: "5", a: 5, b: 10 },
-      ]}
-      width={window.innerWidth * 0.9}
-      height={window.innerHeight * 0.9}
-    >
-      {" "}
-      <XAxis dataKey="name" />
-      <CartesianGrid stroke="#f5f5f5" />
-      <Line type="monotone" dataKey="a" stroke="#ff7300" yAxisId={0} />
-      <Line type="monotone" dataKey="b" stroke="#387908" yAxisId={1} />
-    </LineChart>
-  </div>
-);
+type SimulationOutcome = {
+  cash: number;
+  shares: number;
+  value: number;
+};
+
+const runSimulation = (data: GraphData): SimulationOutcome => {
+  let cash = 1000;
+  let shares = 0;
+
+  data.forEach((datapoint) => {
+    if (cash > 0) {
+      shares += cash / datapoint.price;
+      cash -= datapoint.price * shares;
+    }
+  });
+
+  return {
+    cash,
+    shares,
+    value: cash + shares * data[data.length - 1].price,
+  };
+};
+
+const mapData = (data: AlphavantageApiResponse): GraphData =>
+  Object.keys(data["Time Series (Daily)"])
+    .reverse()
+    .map((date) => ({
+      name: date,
+      price: parseFloat(data["Time Series (Daily)"][date]["5. adjusted close"]),
+    }));
+
+const App = () => {
+  const [outcome, setOutcome] = useState<SimulationOutcome>();
+  return (
+    <div className="main">
+      <LineChart
+        data={mapData(sp500)}
+        width={window.innerWidth * 0.9}
+        height={window.innerHeight * 0.9}
+      >
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <CartesianGrid stroke="#f5f5f5" />
+        <Line type="monotone" dataKey="price" stroke="#0000ff" yAxisId={0} />
+      </LineChart>
+      <button
+        onClick={() => {
+          setOutcome(runSimulation(mapData(sp500)));
+        }}
+      >
+        RUN SIMULATION
+      </button>
+      {outcome && (
+        <span>
+          Cash: {outcome.cash}, shares: {outcome.shares}, total value:{" "}
+          {outcome.value}. Profit: {outcome.value / 10 - 100} %
+        </span>
+      )}
+    </div>
+  );
+};
 
 export default App;
