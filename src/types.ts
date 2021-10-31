@@ -20,7 +20,7 @@ export type AlphavantageApiResponse = {
   };
 };
 
-export type GraphData = {
+export type GraphDataPoint = {
   name: string;
   price: number;
-}[];
+};
