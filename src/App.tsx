@@ -16,6 +16,8 @@ import {
   AlphavantagePriceApiResponse,
   GraphDataPoint,
 } from "./types";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 type SimulationOutcome = {
   cash: number;
@@ -122,6 +124,7 @@ const App = () => {
   const [outcomeB, setOutcomeB] = useState<SimulationOutcome>();
   return (
     <div className="main">
+      <Header />
       <LineChart
         data={mapData(sp500Price, sp500Ema200)}
         width={window.innerWidth * 0.9}
@@ -160,6 +163,7 @@ const App = () => {
           {outcomeB.value}. Profit: {outcomeB.profit} %
         </span>
       )}
+      <Footer />
     </div>
   );
 };
