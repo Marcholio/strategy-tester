@@ -1,4 +1,4 @@
-export type AlphavantageApiResponse = {
+export type AlphavantagePriceApiResponse = {
   "Meta Data": {
     "1. Information": string;
     "2. Symbol": string;
@@ -20,7 +20,25 @@ export type AlphavantageApiResponse = {
   };
 };
 
+export type AlphavantageEmaApiResponse = {
+  "Meta Data": {
+    "1: Symbol": string;
+    "2: Indicator": string;
+    "3: Last Refreshed": string;
+    "4: Interval": string;
+    "5: Time Period": number;
+    "6: Series Type": string;
+    "7: Time Zone": string;
+  };
+  "Technical Analysis: EMA": {
+    [key: string]: {
+      EMA: string;
+    };
+  };
+};
+
 export type GraphDataPoint = {
   name: string;
   price: number;
+  ema200: number | null;
 };

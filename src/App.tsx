@@ -7,10 +7,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import sp500 from "./data/SXR8.FRK.json";
+import sp500Price from "./data/SXR8.FRK-price.json";
+import sp500Ema200 from "./data/SXR8.FRK-EMA.json";
 
 import "./App.css";
-import { AlphavantageApiResponse, GraphDataPoint } from "./types";
+import {
+  AlphavantageEmaApiResponse,
+  AlphavantagePriceApiResponse,
+  GraphDataPoint,
+} from "./types";
 
 type SimulationOutcome = {
   cash: number;
@@ -29,6 +34,14 @@ const dollarCostAveraging: Strategy = {
   buy: () => true,
   sell: () => false,
   cooldown: 0,
+};
+
+const ema200Strategy: Strategy = {
+  buy: (datapoint: GraphDataPoint) =>
+    datapoint.ema200 !== null && datapoint.price > datapoint.ema200,
+  sell: (datapoint: GraphDataPoint) =>
+    datapoint.ema200 !== null && datapoint.price < datapoint.ema200,
+  cooldown: 30,
 };
 
 const runSimulation = (
@@ -88,20 +101,29 @@ const runSimulation = (
   };
 };
 
-const mapData = (data: AlphavantageApiResponse): GraphDataPoint[] =>
-  Object.keys(data["Time Series (Daily)"])
+const mapData = (
+  priceData: AlphavantagePriceApiResponse,
+  ema200Data: AlphavantageEmaApiResponse
+): GraphDataPoint[] =>
+  Object.keys(priceData["Time Series (Daily)"])
     .reverse()
     .map((date) => ({
       name: date,
-      price: parseFloat(data["Time Series (Daily)"][date]["5. adjusted close"]),
+      price: parseFloat(
+        priceData["Time Series (Daily)"][date]["5. adjusted close"]
+      ),
+      ema200: ema200Data["Technical Analysis: EMA"][date]
+        ? parseFloat(ema200Data["Technical Analysis: EMA"][date]["EMA"])
+        : null,
     }));
 
 const App = () => {
   const [outcome, setOutcome] = useState<SimulationOutcome>();
+  const [outcomeB, setOutcomeB] = useState<SimulationOutcome>();
   return (
     <div className="main">
       <LineChart
-        data={mapData(sp500)}
+        data={mapData(sp500Price, sp500Ema200)}
         width={window.innerWidth * 0.9}
         height={window.innerHeight * 0.9}
       >
@@ -110,18 +132,32 @@ const App = () => {
         <Tooltip />
         <CartesianGrid stroke="#f5f5f5" />
         <Line type="monotone" dataKey="price" stroke="#0000ff" yAxisId={0} />
+        <Line type="monotone" dataKey="ema200" stroke="#00ff00" yAxisId={0} />
       </LineChart>
       <button
         onClick={() => {
-          setOutcome(runSimulation(mapData(sp500), dollarCostAveraging));
+          setOutcome(
+            runSimulation(mapData(sp500Price, sp500Ema200), dollarCostAveraging)
+          );
+          setOutcomeB(
+            runSimulation(mapData(sp500Price, sp500Ema200), ema200Strategy)
+          );
         }}
       >
         RUN SIMULATION
       </button>
+      {"OUTCOME"}
       {outcome && (
         <span>
           Cash: {outcome.cash}, shares: {outcome.shares}, total value:{" "}
           {outcome.value}. Profit: {outcome.profit} %
+        </span>
+      )}
+      {"OUTCOME B"}
+      {outcomeB && (
+        <span>
+          Cash: {outcomeB.cash}, shares: {outcomeB.shares}, total value:{" "}
+          {outcomeB.value}. Profit: {outcomeB.profit} %
         </span>
       )}
     </div>
