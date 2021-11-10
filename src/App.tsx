@@ -7,17 +7,20 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Grid } from "@mui/material";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 import sp500Price from "./data/SXR8.FRK-price.json";
 import sp500Ema200 from "./data/SXR8.FRK-EMA.json";
 
-import "./App.css";
 import {
   AlphavantageEmaApiResponse,
   AlphavantagePriceApiResponse,
   GraphDataPoint,
 } from "./types";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+
+import "./App.css";
 
 type SimulationOutcome = {
   cash: number;
@@ -123,20 +126,38 @@ const App = () => {
   const [outcome, setOutcome] = useState<SimulationOutcome>();
   const [outcomeB, setOutcomeB] = useState<SimulationOutcome>();
   return (
-    <div className="main">
+    <>
       <Header />
-      <LineChart
-        data={mapData(sp500Price, sp500Ema200)}
-        width={window.innerWidth * 0.9}
-        height={window.innerHeight * 0.9}
-      >
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <CartesianGrid stroke="#f5f5f5" />
-        <Line type="monotone" dataKey="price" stroke="#0000ff" yAxisId={0} />
-        <Line type="monotone" dataKey="ema200" stroke="#00ff00" yAxisId={0} />
-      </LineChart>
+      <Grid container>
+        <Grid item xs={10}>
+          <LineChart
+            data={mapData(sp500Price, sp500Ema200)}
+            width={window.innerWidth * (10 / 12) * 0.9}
+            height={window.innerHeight * 0.9}
+          >
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <CartesianGrid stroke="#f5f5f5" />
+            <Line
+              type="monotone"
+              dataKey="price"
+              stroke="#0000ff"
+              yAxisId={0}
+            />
+            <Line
+              type="monotone"
+              dataKey="ema200"
+              stroke="#00ff00"
+              yAxisId={0}
+            />
+          </LineChart>
+        </Grid>
+        <Grid item xs={2}>
+          <span>To be added</span>
+        </Grid>
+      </Grid>
+
       <button
         onClick={() => {
           setOutcome(
@@ -164,7 +185,7 @@ const App = () => {
         </span>
       )}
       <Footer />
-    </div>
+    </>
   );
 };
 

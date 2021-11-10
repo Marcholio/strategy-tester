@@ -1,6 +1,12 @@
 import React from "react";
-import { AppBar } from "@material-ui/core";
+import { AppBar, Typography, Toolbar } from "@mui/material";
 
-const Header = () => <AppBar>STRATEGY TESTER</AppBar>;
+const Header = () => (
+  <AppBar position="static">
+    <Toolbar>
+      <Typography variant="h5">STRATEGY TESTER</Typography>
+    </Toolbar>
+  </AppBar>
+);
 
 export default Header;
