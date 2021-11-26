@@ -31,7 +31,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
   // TODO: Add better descriptions for strategies
   return (
     <>
-      <Grid container>
+      <Grid container sx={{ margin: "2rem 0" }}>
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
             <span>Dollar cost averaging</span>

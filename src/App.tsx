@@ -63,7 +63,7 @@ const App = () => {
           </FormGroup>
         </Grid>
       </Grid>
-      <Divider />
+      <Divider sx={{ margin: "2rem 0" }} />
       <Simulation data={data} />
       <Footer />
     </>
