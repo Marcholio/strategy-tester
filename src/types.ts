@@ -48,9 +48,17 @@ export type Strategy = {
   sell: (datapoint: GraphDataPoint) => boolean;
 };
 
+export type Transaction = {
+  type: "buy" | "sell";
+  amount: number;
+  cash: number;
+  date: string;
+};
+
 export type SimulationOutcome = {
   cash: number;
   shares: number;
   value: number;
   profit: number;
+  transactions: Transaction[];
 };

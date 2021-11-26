@@ -6,6 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import { runSimulation } from "../../simulation";
 import { dollarCostAveraging, ema200Strategy } from "../../strategies";
 import TotalResult from "./TotalResult";
+import TransactionTable from "./TransactionTable";
 
 import { GraphDataPoint, SimulationOutcome } from "../../types";
 
@@ -60,18 +61,32 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
         </Grid>
       </Grid>
       {!simulationRunning && (
-        <Grid container>
-          {outcome1 && (
-            <Grid item xs={6}>
-              <TotalResult outcome={outcome1} />
-            </Grid>
-          )}
-          {outcome2 && (
-            <Grid item xs={6}>
-              <TotalResult outcome={outcome2} />
-            </Grid>
-          )}
-        </Grid>
+        <>
+          <Grid container>
+            {outcome1 && (
+              <Grid item xs={6}>
+                <TotalResult outcome={outcome1} />
+              </Grid>
+            )}
+            {outcome2 && (
+              <Grid item xs={6}>
+                <TotalResult outcome={outcome2} />
+              </Grid>
+            )}
+          </Grid>
+          <Grid container>
+            {outcome1 && (
+              <Grid item xs={6}>
+                <TransactionTable data={outcome1.transactions} />
+              </Grid>
+            )}
+            {outcome2 && (
+              <Grid item xs={6}>
+                <TransactionTable data={outcome2.transactions} />
+              </Grid>
+            )}
+          </Grid>
+        </>
       )}
     </>
   );
