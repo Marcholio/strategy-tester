@@ -4,7 +4,6 @@ export const runSimulation = (
   data: GraphDataPoint[],
   strategy: Strategy
 ): SimulationOutcome => {
-  console.log(strategy);
   const monthlySaving = 100;
   // TODO: Transaction costs
 

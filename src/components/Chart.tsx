@@ -9,13 +9,8 @@ import {
 } from "recharts";
 
 import indicators from "../utils/technicalIndicators";
-import mapData from "../utils/mapData";
 
-import {
-  AlphavantageEmaApiResponse,
-  AlphavantagePriceApiResponse,
-  GraphDataPoint,
-} from "../types";
+import { GraphDataPoint } from "../types";
 
 const RECHARTS_MAX_DATAPOINTS = 1000;
 
@@ -28,15 +23,13 @@ const compress = (data: GraphDataPoint[]): GraphDataPoint[] => {
 };
 
 const Chart = ({
-  priceData,
-  ema200Data,
+  data,
   selectedIndicators,
 }: {
-  priceData: AlphavantagePriceApiResponse;
-  ema200Data: AlphavantageEmaApiResponse;
+  data: GraphDataPoint[];
   selectedIndicators: { [key: string]: boolean };
 }) => {
-  const compressedData = compress(mapData(priceData, ema200Data));
+  const compressedData = compress(data);
   return (
     <LineChart
       data={compressedData}
