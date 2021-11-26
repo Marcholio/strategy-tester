@@ -2,6 +2,8 @@
 
 Investment strategy tester for better long-term results!
 
+Check it out: https://marcholio.github.io/strategy-tester/
+
 ## Motivation
 
 There are plenty of investment strategy testers available, but they are usually lacking some crucial factors that affect the results dramatically. Also they are mostly focusing on short-timeframe trading, rather than long-term investing.

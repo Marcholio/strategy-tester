@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { Grid } from "@mui/material";
-import classnames from "classnames";
+import {
+  Grid,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -20,33 +25,48 @@ import "./App.css";
 const App = () => {
   const [outcome, setOutcome] = useState<SimulationOutcome>();
   const [outcomeB, setOutcomeB] = useState<SimulationOutcome>();
-  // TODO: Implement indicator selection properly
-  const [selectedIndicators, setSelectedIndicators] = useState<{
-    [key: string]: boolean;
-  }>(
+  const [selectedIndicators, setSelectedIndicators] = useState(
     Object.keys(indicators).reduce((acc, cur) => {
       acc[cur] = true;
       return acc;
     }, {} as { [key: string]: boolean })
   );
 
+  const toggleIndicator = (indicator: string) => {
+    setSelectedIndicators({
+      ...selectedIndicators,
+      [indicator]: !selectedIndicators[indicator],
+    });
+  };
+
   return (
     <>
       <Header />
       <Grid container>
         <Grid item xs={10}>
-          <Chart priceData={sp500Price} ema200Data={sp500Ema200} />
+          <Chart
+            priceData={sp500Price}
+            ema200Data={sp500Ema200}
+            selectedIndicators={selectedIndicators}
+          />
         </Grid>
         <Grid item xs={2}>
-          {Object.values(indicators).map((indicator) => (
-            <span
-              className={classnames({
-                selected: selectedIndicators[indicator.key],
-              })}
-            >
-              {indicator.description}
-            </span>
-          ))}
+          <Typography variant={"h6"}>Technical indicators</Typography>
+          <FormGroup>
+            {Object.values(indicators).map((indicator) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value={indicator.key}
+                    checked={selectedIndicators[indicator.key]}
+                    onChange={() => toggleIndicator(indicator.key)}
+                  />
+                }
+                label={indicator.description}
+                key={indicator.key}
+              />
+            ))}
+          </FormGroup>
         </Grid>
       </Grid>
 
