@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Grid } from "@mui/material";
+import classnames from "classnames";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -7,6 +8,7 @@ import Chart from "./components/Chart";
 import mapData from "./utils/mapData";
 import { runSimulation } from "./simulation";
 import { dollarCostAveraging, ema200Strategy } from "./strategies";
+import indicators from "./utils/technicalIndicators";
 
 import sp500Price from "./data/SXR8.FRK-price.json";
 import sp500Ema200 from "./data/SXR8.FRK-EMA.json";
@@ -18,6 +20,16 @@ import "./App.css";
 const App = () => {
   const [outcome, setOutcome] = useState<SimulationOutcome>();
   const [outcomeB, setOutcomeB] = useState<SimulationOutcome>();
+  // TODO: Implement indicator selection properly
+  const [selectedIndicators, setSelectedIndicators] = useState<{
+    [key: string]: boolean;
+  }>(
+    Object.keys(indicators).reduce((acc, cur) => {
+      acc[cur] = true;
+      return acc;
+    }, {} as { [key: string]: boolean })
+  );
+
   return (
     <>
       <Header />
@@ -26,7 +38,15 @@ const App = () => {
           <Chart priceData={sp500Price} ema200Data={sp500Ema200} />
         </Grid>
         <Grid item xs={2}>
-          <span>To be added</span> {/* TODO: Add TA selectors here */}
+          {Object.values(indicators).map((indicator) => (
+            <span
+              className={classnames({
+                selected: selectedIndicators[indicator.key],
+              })}
+            >
+              {indicator.description}
+            </span>
+          ))}
         </Grid>
       </Grid>
 
