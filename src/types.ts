@@ -42,3 +42,15 @@ export type GraphDataPoint = {
   price: number;
   ema200: number | null;
 };
+
+export type Strategy = {
+  buy: (datapoint: GraphDataPoint) => boolean;
+  sell: (datapoint: GraphDataPoint) => boolean;
+};
+
+export type SimulationOutcome = {
+  cash: number;
+  shares: number;
+  value: number;
+  profit: number;
+};
