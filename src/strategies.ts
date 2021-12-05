@@ -1,5 +1,9 @@
 import { GraphDataPoint, Strategy } from "./types";
 
+// TODO: Add more strategies,eg.
+// RSI
+// EMA 50
+
 /**
  * The base strategy to compare to.
  * Buy with fixed amount of money every month.
@@ -8,6 +12,7 @@ import { GraphDataPoint, Strategy } from "./types";
 export const dollarCostAveraging: Strategy = {
   buy: () => true,
   sell: () => false,
+  cooldown: 0,
 };
 
 /**
@@ -20,4 +25,5 @@ export const ema200Strategy: Strategy = {
     datapoint.ema200 !== null && datapoint.price > datapoint.ema200,
   sell: (datapoint: GraphDataPoint) =>
     datapoint.ema200 !== null && datapoint.price < datapoint.ema200,
+  cooldown: 20,
 };

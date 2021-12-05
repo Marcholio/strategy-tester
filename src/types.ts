@@ -46,12 +46,14 @@ export type GraphDataPoint = {
 export type Strategy = {
   buy: (datapoint: GraphDataPoint) => boolean;
   sell: (datapoint: GraphDataPoint) => boolean;
+  cooldown: number; // Market days between transactions
 };
 
 export type Transaction = {
   type: "buy" | "sell";
   amount: number;
-  cash: number;
+  totalValue: number;
+  price: number;
   date: string;
 };
 

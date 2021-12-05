@@ -37,6 +37,8 @@ const App = () => {
 
   const data = mapData(sp500Price, sp500Ema200);
 
+  // TODO: Plot strategy outcomes
+
   return (
     <>
       <Header />

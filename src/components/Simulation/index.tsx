@@ -30,6 +30,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
 
   // TODO: Implement strategy selectors
   // TODO: Add better descriptions for strategies
+  // TODO: Add configuration params to middle column
   return (
     <>
       <Grid container sx={{ margin: "2rem 0" }}>

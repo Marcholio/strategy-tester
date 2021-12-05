@@ -19,7 +19,8 @@ const TransactionTable = ({ data }: { data: Transaction[] }) => (
             <TableCell align="center">Date</TableCell>
             <TableCell align="center">Type</TableCell>
             <TableCell align="center">Shares</TableCell>
-            <TableCell align="center">Cash</TableCell>
+            <TableCell align="center">Price</TableCell>
+            <TableCell align="center">Value</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -28,7 +29,8 @@ const TransactionTable = ({ data }: { data: Transaction[] }) => (
               <TableCell align="center">{tx.date}</TableCell>
               <TableCell align="center">{tx.type.toUpperCase()}</TableCell>
               <TableCell align="center">{tx.amount.toFixed(1)}</TableCell>
-              <TableCell align="center">{tx.cash.toFixed(2)} €</TableCell>
+              <TableCell align="center">{tx.price.toFixed(2)} €</TableCell>
+              <TableCell align="center">{tx.totalValue.toFixed(2)} €</TableCell>
             </TableRow>
           ))}
         </TableBody>
