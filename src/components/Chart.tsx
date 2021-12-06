@@ -34,7 +34,7 @@ const Chart = ({
     <LineChart
       data={compressedData}
       width={window.innerWidth * (10 / 12) * 0.9}
-      height={window.innerHeight * 0.9}
+      height={window.innerHeight * 0.6}
     >
       <XAxis dataKey="name" />
       <YAxis />

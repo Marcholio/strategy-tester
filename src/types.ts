@@ -64,3 +64,9 @@ export type SimulationOutcome = {
   profit: number;
   transactions: Transaction[];
 };
+
+export type SimulationParams = {
+  initialCash: number;
+  monthlyCash: number;
+  txCost: number;
+};

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
 
@@ -8,7 +8,21 @@ import { dollarCostAveraging, ema200Strategy } from "../../strategies";
 import TotalResult from "./TotalResult";
 import TransactionTable from "./TransactionTable";
 
-import { GraphDataPoint, SimulationOutcome } from "../../types";
+import {
+  GraphDataPoint,
+  SimulationOutcome,
+  SimulationParams,
+} from "../../types";
+
+const defaultParams: SimulationParams = {
+  initialCash: 1000,
+  monthlyCash: 100,
+  txCost: 15,
+};
+
+const paramFieldStyle = {
+  margin: "12px 0",
+};
 
 const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
   const [outcome1, setOutcome1] = useState<SimulationOutcome>();
@@ -16,11 +30,13 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
 
   const [simulationRunning, setSimulationRunning] = useState<boolean>(false);
 
+  const [params, setParams] = useState<SimulationParams>(defaultParams);
+
   const startSimulation = () => {
     setSimulationRunning(true);
 
-    const dcaOutcome = runSimulation(data, dollarCostAveraging);
-    const ema200Outcome = runSimulation(data, ema200Strategy);
+    const dcaOutcome = runSimulation(data, dollarCostAveraging, params);
+    const ema200Outcome = runSimulation(data, ema200Strategy, params);
 
     setOutcome1(dcaOutcome);
     setOutcome2(ema200Outcome);
@@ -30,7 +46,6 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
 
   // TODO: Implement strategy selectors
   // TODO: Add better descriptions for strategies
-  // TODO: Add configuration params to middle column
   return (
     <>
       <Grid container sx={{ margin: "2rem 0" }}>
@@ -45,6 +60,52 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
               textAlign: "center",
             }}
           >
+            <Typography variant={"h6"}>Parameters</Typography>
+            <TextField
+              id="initialCash"
+              label="Initial cash"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={params.initialCash}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  initialCash: parseInt(event.target.value, 10) || 0,
+                })
+              }
+              sx={paramFieldStyle}
+            />
+            <TextField
+              id="monthlyCash"
+              label="Monthly investment"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={params.monthlyCash}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  monthlyCash: parseInt(event.target.value, 10) || 0,
+                })
+              }
+              sx={paramFieldStyle}
+            />
+            <TextField
+              id="txCost"
+              label="Transaction fee"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={params.txCost}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  txCost: parseInt(event.target.value, 10) || 0,
+                })
+              }
+              sx={paramFieldStyle}
+            />
             <LoadingButton
               variant={"outlined"}
               loading={simulationRunning}

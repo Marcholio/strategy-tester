@@ -1,22 +1,20 @@
 import {
   GraphDataPoint,
   SimulationOutcome,
+  SimulationParams,
   Strategy,
   Transaction,
 } from "./types";
-
-const TX_COST = 8; // Fixed price. TODO: Implement percentage based price
-const INITIAL_CASH = 1000;
-const MONTHLY_SAVING = 100;
 
 // First date that has all indicators available to avoid head start for simpler strategies
 const simulationStartDate = "2011-08-15";
 
 export const runSimulation = (
   data: GraphDataPoint[],
-  strategy: Strategy
+  strategy: Strategy,
+  params: SimulationParams
 ): SimulationOutcome => {
-  let cash = INITIAL_CASH;
+  let cash = params.initialCash;
   let shares = 0;
 
   if (data.length === 0) {
@@ -40,16 +38,16 @@ export const runSimulation = (
       cooldownCounter -= 1;
       // Add money to account once per month, ie. when month changes
       if (!datapoint.name.startsWith(curMonth)) {
-        cash += MONTHLY_SAVING;
-        invested += MONTHLY_SAVING;
+        cash += params.monthlyCash;
+        invested += params.monthlyCash;
         curMonth = datapoint.name.slice(0, 7);
       }
 
       // Buy
       if (strategy.buy(datapoint)) {
-        if (cash > 0.00000000001 && cooldownCounter <= 0) {
+        if (cash > params.txCost && cooldownCounter <= 0) {
           cooldownCounter = strategy.cooldown;
-          cash -= TX_COST;
+          cash -= params.txCost; // TODO: Implement percentage based price
 
           const sharesBought = cash / datapoint.price;
 
@@ -69,9 +67,9 @@ export const runSimulation = (
 
       // Sell
       if (strategy.sell(datapoint)) {
-        if (shares > 0.00000000001 && cooldownCounter <= 0) {
+        if (shares * datapoint.price > params.txCost && cooldownCounter <= 0) {
           cooldownCounter = strategy.cooldown;
-          cash -= TX_COST;
+          cash -= params.txCost;
 
           const transaction: Transaction = {
             type: "sell",
