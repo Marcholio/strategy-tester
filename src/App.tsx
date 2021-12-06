@@ -16,7 +16,8 @@ import indicators from "./utils/technicalIndicators";
 import mapData from "./utils/mapData";
 
 import sp500Price from "./data/SXR8.FRK-price.json";
-import sp500Ema200 from "./data/SXR8.FRK-EMA.json";
+import sp500Ema200 from "./data/SXR8.FRK-EMA-200.json";
+import sp500Ema50 from "./data/SXR8.FRK-EMA-50.json";
 
 import "./App.css";
 
@@ -35,7 +36,7 @@ const App = () => {
     });
   };
 
-  const data = mapData(sp500Price, sp500Ema200);
+  const data = mapData(sp500Price, sp500Ema200, sp500Ema50);
 
   // TODO: Plot strategy outcomes
 

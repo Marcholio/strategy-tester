@@ -41,12 +41,15 @@ export type GraphDataPoint = {
   name: string;
   price: number;
   ema200: number | null;
+  ema50: number | null;
 };
 
 export type Strategy = {
   buy: (datapoint: GraphDataPoint) => boolean;
   sell: (datapoint: GraphDataPoint) => boolean;
   cooldown: number; // Market days between transactions
+  title: string;
+  description: string;
 };
 
 export type Transaction = {

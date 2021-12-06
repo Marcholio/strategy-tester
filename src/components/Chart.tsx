@@ -22,6 +22,24 @@ const compress = (data: GraphDataPoint[]): GraphDataPoint[] => {
   return data.filter((d, idx) => idx % compressionRatio === 0);
 };
 
+const lineIndicator = (key: string) => {
+  if (key in indicators) {
+    const indicator = indicators[key as keyof typeof indicators];
+    return (
+      <Line
+        key={key}
+        type="monotone"
+        dataKey={indicator.key}
+        stroke={indicator.color}
+        yAxisId={0}
+        dot={false}
+      />
+    );
+  }
+
+  return null;
+};
+
 const Chart = ({
   data,
   selectedIndicators,
@@ -47,15 +65,9 @@ const Chart = ({
         yAxisId={0}
         dot={false}
       />
-      {selectedIndicators[indicators.ema200.key] && (
-        <Line
-          type="monotone"
-          dataKey="ema200"
-          stroke="#00ff00"
-          yAxisId={0}
-          dot={false}
-        />
-      )}
+      {Object.keys(selectedIndicators)
+        .filter((key) => selectedIndicators[key])
+        .map((key) => lineIndicator(key))}
     </LineChart>
   );
 };

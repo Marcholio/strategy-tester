@@ -32,6 +32,8 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
 
   const [params, setParams] = useState<SimulationParams>(defaultParams);
 
+  const [strategy, setStrategy] = useState(ema200Strategy);
+
   const startSimulation = () => {
     setSimulationRunning(true);
 
@@ -45,19 +47,23 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
   };
 
   // TODO: Implement strategy selectors
-  // TODO: Add better descriptions for strategies
   return (
     <>
       <Grid container sx={{ margin: "2rem 0" }}>
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
-            <span>Dollar cost averaging</span>
+            <Typography variant="h6">{dollarCostAveraging.title}</Typography>
+            <Typography variant="body1">
+              {dollarCostAveraging.description}
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={2}>
           <Box
             sx={{
               textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <Typography variant={"h6"}>Parameters</Typography>
@@ -118,7 +124,8 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
         </Grid>
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
-            <span>EMA 200 strategy</span>
+            <Typography variant="h6">{strategy.title}</Typography>
+            <Typography variant="body1">{strategy.description}</Typography>
           </Box>
         </Grid>
       </Grid>
