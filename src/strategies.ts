@@ -52,11 +52,22 @@ export const rsi14Strategy: Strategy = {
   sell: (prev, cur) => prev.rsi14 > 70 && cur.rsi14 <= 70,
 };
 
+/**
+ * Random strategy, ie. "blind monkey"
+ */
+export const randomStrategy: Strategy = {
+  title: "Random strategy",
+  description: "Buy or sell with 5% probability",
+  buy: (prev, cur) => Math.random() < 0.05,
+  sell: (prev, cur) => Math.random() < 0.05,
+};
+
 const strategies = {
   dca: dollarCostAveraging,
   ema200: ema200Strategy,
   ema50: ema50Strategy,
   rsi14: rsi14Strategy,
+  random: randomStrategy,
 };
 
 export default strategies;
