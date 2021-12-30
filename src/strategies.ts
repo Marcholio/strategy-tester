@@ -3,6 +3,8 @@ import { Strategy } from "./types";
 // TODO: Add more strategies,eg.
 // MACD
 
+// TODO: Add support for custom strategies
+
 /**
  * The base strategy to compare to.
  * Buy with fixed amount of money every month.
@@ -49,7 +51,7 @@ export const rsi14Strategy: Strategy = {
   title: "RSI 14 Strategy",
   description: "Buy when RSI breaks above 30, sell when RSI is breaks below 70",
   buy: (prev, cur) => prev.rsi14 < 30 && cur.rsi14 >= 30,
-  sell: (prev, cur) => prev.rsi14 > 70 && cur.rsi14 <= 70,
+  sell: (prev, cur) => false, // prev.rsi14 > 70 && cur.rsi14 <= 70,
 };
 
 /**

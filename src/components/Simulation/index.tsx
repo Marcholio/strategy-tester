@@ -7,6 +7,7 @@ import { runSimulation } from "../../simulation";
 import strategies from "../../strategies";
 import TotalResult from "./TotalResult";
 import TransactionTable from "./TransactionTable";
+import ResultChart from "../ResultChart";
 
 import {
   GraphDataPoint,
@@ -17,10 +18,12 @@ import {
 type StrategyId = keyof typeof strategies;
 
 const defaultParams: SimulationParams = {
-  initialCash: 1000,
+  initialCash: 100,
   monthlyCash: 100,
-  txCost: 15,
+  txCost: 5,
   cooldown: 20,
+  posSize: 20,
+  minPos: 100,
 };
 
 const paramFieldStyle = {
@@ -129,6 +132,36 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
               }
               sx={paramFieldStyle}
             />
+            <TextField
+              id="posSize"
+              label="Position size (%)"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={params.posSize}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  posSize: parseInt(event.target.value, 10) || 0,
+                })
+              }
+              sx={paramFieldStyle}
+            />
+            <TextField
+              id="minPos"
+              label="Minimum position (€/$)"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={params.minPos}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  minPos: parseInt(event.target.value, 10) || 0,
+                })
+              }
+              sx={paramFieldStyle}
+            />
             <LoadingButton
               variant={"outlined"}
               loading={simulationRunning}
@@ -159,31 +192,36 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
           </Box>
         </Grid>
       </Grid>
-      {!simulationRunning && (
+      {!simulationRunning && outcome1 && outcome2 && (
         <>
+          <ResultChart
+            priceData={data}
+            outcomeLeft={outcome1}
+            outcomeRight={outcome2}
+          />
           <Grid container>
-            {outcome1 && (
+            {
               <Grid item xs={6}>
                 <TotalResult outcome={outcome1} />
               </Grid>
-            )}
-            {outcome2 && (
+            }
+            {
               <Grid item xs={6}>
                 <TotalResult outcome={outcome2} />
               </Grid>
-            )}
+            }
           </Grid>
           <Grid container>
-            {outcome1 && (
+            {
               <Grid item xs={6}>
                 <TransactionTable data={outcome1.transactions} />
               </Grid>
-            )}
-            {outcome2 && (
+            }
+            {
               <Grid item xs={6}>
                 <TransactionTable data={outcome2.transactions} />
               </Grid>
-            )}
+            }
           </Grid>
         </>
       )}

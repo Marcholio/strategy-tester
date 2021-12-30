@@ -21,12 +21,14 @@ export const runSimulation = (
       value: cash,
       profit: 0,
       transactions: [],
+      chartData: [],
     };
   }
 
   let curMonth = data[0].name.slice(0, 7);
   let invested = cash;
   const transactions: Transaction[] = [];
+  const chartData: SimulationOutcome["chartData"] = [];
 
   let cooldownCounter = 0;
 
@@ -43,18 +45,20 @@ export const runSimulation = (
       curMonth = datapoint.name.slice(0, 7);
     }
 
+    const canBuy = (params.posSize / 100) * cash >= params.minPos;
+
     // Buy
-    if (strategy.buy(data[index - 1], datapoint)) {
+    if (strategy.buy(data[index - 1], datapoint) && canBuy) {
       if (cash > params.txCost && cooldownCounter <= 0) {
         cooldownCounter = params.cooldown;
         cash -= params.txCost; // TODO: Implement percentage based price
 
-        const sharesBought = cash / datapoint.price;
+        const sharesBought = ((params.posSize / 100) * cash) / datapoint.price;
 
         const transaction: Transaction = {
           type: "buy",
           amount: sharesBought,
-          totalValue: shares * datapoint.price + cash, // TODO: Buy smaller positions
+          totalValue: shares * datapoint.price + cash,
           price: datapoint.price,
           date: datapoint.name,
         };
@@ -65,8 +69,11 @@ export const runSimulation = (
       }
     }
 
+    const canSell =
+      shares * datapoint.price * (params.posSize / 100) >= params.minPos;
+
     // Sell
-    if (strategy.sell(data[index - 1], datapoint)) {
+    if (strategy.sell(data[index - 1], datapoint) && canSell) {
       if (shares * datapoint.price > params.txCost && cooldownCounter <= 0) {
         cooldownCounter = params.cooldown;
         cash -= params.txCost;
@@ -80,11 +87,19 @@ export const runSimulation = (
         };
 
         cash += shares * datapoint.price;
-        shares -= transaction.amount; // TODO: Sell smaller positions
+        shares -= transaction.amount;
 
         transactions.push(transaction);
       }
     }
+
+    chartData.push({
+      name: datapoint.name,
+      value:
+        invested > 0
+          ? ((cash + shares * datapoint.price) / invested - 1) * 100
+          : 0,
+    });
   });
 
   const totalValue = cash + shares * data[data.length - 1].price;
@@ -95,5 +110,6 @@ export const runSimulation = (
     value: totalValue,
     profit: (totalValue / invested - 1) * 100,
     transactions,
+    chartData,
   };
 };

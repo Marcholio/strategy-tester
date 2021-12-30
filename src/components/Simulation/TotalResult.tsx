@@ -10,8 +10,6 @@ import { Box } from "@mui/system";
 
 import { SimulationOutcome } from "../../types";
 
-// TODO: Highlight the winning strategy somehow
-
 const TotalResult = ({ outcome }: { outcome: SimulationOutcome }) => (
   <Box sx={{ width: "50%", paddingLeft: "25%" }}>
     <TableContainer>

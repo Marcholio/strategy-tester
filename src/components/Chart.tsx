@@ -11,7 +11,7 @@ import {
 import indicators from "../utils/technicalIndicators";
 
 import { GraphDataPoint } from "../types";
-import { compressChartData } from "../utils/chartUtils";
+import { compressData } from "../utils/chartUtils";
 
 const lineIndicator = (key: string) => {
   if (key in indicators) {
@@ -50,7 +50,7 @@ const Chart = ({
     );
   }
 
-  const compressedData = compressChartData(data);
+  const compressedData = compressData<GraphDataPoint>(data);
   return (
     <LineChart
       data={compressedData}

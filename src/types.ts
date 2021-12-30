@@ -103,6 +103,7 @@ export type SimulationOutcome = {
   value: number;
   profit: number;
   transactions: Transaction[];
+  chartData: { name: string; value: number }[];
 };
 
 export type SimulationParams = {
@@ -110,4 +111,6 @@ export type SimulationParams = {
   monthlyCash: number;
   txCost: number;
   cooldown: number;
+  posSize: number;
+  minPos: number;
 };

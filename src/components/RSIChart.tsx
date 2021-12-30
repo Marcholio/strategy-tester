@@ -9,11 +9,11 @@ import {
 } from "recharts";
 
 import { GraphDataPoint } from "../types";
-import { compressChartData } from "../utils/chartUtils";
+import { compressData } from "../utils/chartUtils";
 import indicators from "../utils/technicalIndicators";
 
 const RSIChart = ({ data }: { data: GraphDataPoint[] }) => {
-  const compressedData = compressChartData(data);
+  const compressedData = compressData(data);
   return (
     <LineChart
       data={compressedData}
