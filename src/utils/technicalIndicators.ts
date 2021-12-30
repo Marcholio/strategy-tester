@@ -22,9 +22,18 @@ const ema50: TechnicalIndicator = {
   color: "#FFA500",
 };
 
+const rsi14: TechnicalIndicator = {
+  key: "rsi14",
+  type: "RSI",
+  period: 14,
+  description: "Relative strength index (RSI)",
+  color: "#673AB7",
+};
+
 const indicators = {
   ema200,
   ema50,
+  rsi14,
 };
 
 export default indicators;

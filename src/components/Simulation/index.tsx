@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Grid, TextField, Typography } from "@mui/material";
+import { Grid, TextField, Typography, Select, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
 
 import { runSimulation } from "../../simulation";
-import { dollarCostAveraging, ema200Strategy } from "../../strategies";
+import strategies from "../../strategies";
 import TotalResult from "./TotalResult";
 import TransactionTable from "./TransactionTable";
 
@@ -14,10 +14,13 @@ import {
   SimulationParams,
 } from "../../types";
 
+type StrategyId = keyof typeof strategies;
+
 const defaultParams: SimulationParams = {
   initialCash: 1000,
   monthlyCash: 100,
   txCost: 15,
+  cooldown: 20,
 };
 
 const paramFieldStyle = {
@@ -32,29 +35,28 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
 
   const [params, setParams] = useState<SimulationParams>(defaultParams);
 
-  const [strategy, setStrategy] = useState(ema200Strategy);
+  const [strategyId, setStrategyId] = useState<StrategyId>("ema200");
 
   const startSimulation = () => {
     setSimulationRunning(true);
 
-    const dcaOutcome = runSimulation(data, dollarCostAveraging, params);
-    const ema200Outcome = runSimulation(data, ema200Strategy, params);
+    const dcaOutcome = runSimulation(data, strategies.dca, params);
+    const outcome2 = runSimulation(data, strategies[strategyId], params);
 
     setOutcome1(dcaOutcome);
-    setOutcome2(ema200Outcome);
+    setOutcome2(outcome2);
 
     setSimulationRunning(false);
   };
 
-  // TODO: Implement strategy selectors
   return (
     <>
       <Grid container sx={{ margin: "2rem 0" }}>
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h6">{dollarCostAveraging.title}</Typography>
+            <Typography variant="h6">{strategies.dca.title}</Typography>
             <Typography variant="body1">
-              {dollarCostAveraging.description}
+              {strategies.dca.description}
             </Typography>
           </Box>
         </Grid>
@@ -69,7 +71,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
             <Typography variant={"h6"}>Parameters</Typography>
             <TextField
               id="initialCash"
-              label="Initial cash"
+              label="Initial cash (€/$)"
               variant="outlined"
               type="number"
               size="small"
@@ -84,7 +86,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
             />
             <TextField
               id="monthlyCash"
-              label="Monthly investment"
+              label="Monthly investment (€/$)"
               variant="outlined"
               type="number"
               size="small"
@@ -99,7 +101,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
             />
             <TextField
               id="txCost"
-              label="Transaction fee"
+              label="Transaction fee (€/$)"
               variant="outlined"
               type="number"
               size="small"
@@ -108,6 +110,21 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
                 setParams({
                   ...params,
                   txCost: parseInt(event.target.value, 10) || 0,
+                })
+              }
+              sx={paramFieldStyle}
+            />
+            <TextField
+              id="cooldown"
+              label="Cooldown (days)"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={params.cooldown}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  cooldown: parseInt(event.target.value, 10) || 0,
                 })
               }
               sx={paramFieldStyle}
@@ -124,8 +141,21 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
         </Grid>
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h6">{strategy.title}</Typography>
-            <Typography variant="body1">{strategy.description}</Typography>
+            <Select
+              value={strategyId}
+              onChange={(e) => {
+                setStrategyId(e.target.value as StrategyId);
+              }}
+            >
+              {Object.entries(strategies).map(([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value.title}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography variant="body1">
+              {strategies[strategyId].description}
+            </Typography>
           </Box>
         </Grid>
       </Grid>

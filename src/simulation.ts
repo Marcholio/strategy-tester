@@ -30,19 +30,23 @@ export const runSimulation = (
 
   let cooldownCounter = 0;
 
-  data.forEach((datapoint) => {
+  data.forEach((datapoint, index) => {
+    if (index === 0) {
+      return;
+    }
+
     cooldownCounter -= 1;
-    // Add money to account once per month, ie. when month changes
     if (!datapoint.name.startsWith(curMonth)) {
+      // Add money to account once per month, ie. when month changes
       cash += params.monthlyCash;
       invested += params.monthlyCash;
       curMonth = datapoint.name.slice(0, 7);
     }
 
     // Buy
-    if (strategy.buy(datapoint)) {
+    if (strategy.buy(data[index - 1], datapoint)) {
       if (cash > params.txCost && cooldownCounter <= 0) {
-        cooldownCounter = strategy.cooldown;
+        cooldownCounter = params.cooldown;
         cash -= params.txCost; // TODO: Implement percentage based price
 
         const sharesBought = cash / datapoint.price;
@@ -62,9 +66,9 @@ export const runSimulation = (
     }
 
     // Sell
-    if (strategy.sell(datapoint)) {
+    if (strategy.sell(data[index - 1], datapoint)) {
       if (shares * datapoint.price > params.txCost && cooldownCounter <= 0) {
-        cooldownCounter = strategy.cooldown;
+        cooldownCounter = params.cooldown;
         cash -= params.txCost;
 
         const transaction: Transaction = {

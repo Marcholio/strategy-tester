@@ -1,7 +1,6 @@
-import { GraphDataPoint, Strategy } from "./types";
+import { Strategy } from "./types";
 
 // TODO: Add more strategies,eg.
-// RSI
 // MACD
 
 /**
@@ -14,7 +13,6 @@ export const dollarCostAveraging: Strategy = {
   description: "Buy with same amount every month. Never sell.",
   buy: () => true,
   sell: () => false,
-  cooldown: 0,
 };
 
 /**
@@ -26,11 +24,8 @@ export const ema200Strategy: Strategy = {
   title: "EMA 200 Strategy",
   description:
     "Buy when price is above 200EMA, sell when price is below 200EMA",
-  buy: (datapoint: GraphDataPoint) =>
-    datapoint.ema200 !== null && datapoint.price > datapoint.ema200,
-  sell: (datapoint: GraphDataPoint) =>
-    datapoint.ema200 !== null && datapoint.price < datapoint.ema200,
-  cooldown: 20,
+  buy: (prev, cur) => cur.price > cur.ema200,
+  sell: (prev, cur) => cur.price < cur.ema200,
 };
 
 /**
@@ -41,9 +36,27 @@ export const ema200Strategy: Strategy = {
 export const ema50Strategy: Strategy = {
   title: "EMA 50 Strategy",
   description: "Buy when price is above 50EMA, sell when price is below 50EMA",
-  buy: (datapoint: GraphDataPoint) =>
-    datapoint.ema50 !== null && datapoint.price > datapoint.ema50,
-  sell: (datapoint: GraphDataPoint) =>
-    datapoint.ema50 !== null && datapoint.price < datapoint.ema50,
-  cooldown: 20,
+  buy: (prev, cur) => cur.price > cur.ema50,
+  sell: (prev, cur) => cur.price < cur.ema50,
 };
+
+/**
+ * Relative strength index strategy.
+ * Buy, if price is oversold
+ * Sell, if price is overbought
+ */
+export const rsi14Strategy: Strategy = {
+  title: "RSI 14 Strategy",
+  description: "Buy when RSI breaks above 30, sell when RSI is breaks below 70",
+  buy: (prev, cur) => prev.rsi14 < 30 && cur.rsi14 >= 30,
+  sell: (prev, cur) => prev.rsi14 > 70 && cur.rsi14 <= 70,
+};
+
+const strategies = {
+  dca: dollarCostAveraging,
+  ema200: ema200Strategy,
+  ema50: ema50Strategy,
+  rsi14: rsi14Strategy,
+};
+
+export default strategies;

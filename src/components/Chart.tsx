@@ -11,16 +11,7 @@ import {
 import indicators from "../utils/technicalIndicators";
 
 import { GraphDataPoint } from "../types";
-
-const RECHARTS_MAX_DATAPOINTS = 1000;
-
-// Compress the data for performance reasons
-// Only affects charting, does not affect simulation itself
-const compress = (data: GraphDataPoint[]): GraphDataPoint[] => {
-  const compressionRatio = Math.ceil(data.length / RECHARTS_MAX_DATAPOINTS);
-
-  return data.filter((d, idx) => idx % compressionRatio === 0);
-};
+import { compressChartData } from "../utils/chartUtils";
 
 const lineIndicator = (key: string) => {
   if (key in indicators) {
@@ -43,11 +34,23 @@ const lineIndicator = (key: string) => {
 const Chart = ({
   data,
   selectedIndicators,
+  omitIndicators,
 }: {
   data: GraphDataPoint[];
   selectedIndicators: { [key: string]: boolean };
+  omitIndicators: string[];
 }) => {
-  const compressedData = compress(data);
+  if (
+    omitIndicators.filter(
+      (indicator) => selectedIndicators[indicator] === undefined
+    ).length > 0
+  ) {
+    console.warn(
+      "WARNING: omitted indicators not present in selected indicators!"
+    );
+  }
+
+  const compressedData = compressChartData(data);
   return (
     <LineChart
       data={compressedData}
@@ -66,7 +69,9 @@ const Chart = ({
         dot={false}
       />
       {Object.keys(selectedIndicators)
-        .filter((key) => selectedIndicators[key])
+        .filter(
+          (key) => !omitIndicators.includes(key) && selectedIndicators[key]
+        )
         .map((key) => lineIndicator(key))}
     </LineChart>
   );

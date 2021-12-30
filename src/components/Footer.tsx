@@ -11,7 +11,7 @@ const Footer = () => (
       bgcolor: "#ddd",
     }}
   >
-    <span>Copyright © 2021 Markus Tyrkkö</span>
+    <span>Copyright © 2022 Markus Tyrkkö</span>
     <span>
       <a
         href="https://github.com/Marcholio/strategy-tester"
