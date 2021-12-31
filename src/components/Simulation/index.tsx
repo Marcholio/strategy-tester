@@ -13,7 +13,7 @@ import {
   GraphDataPoint,
   SimulationOutcome,
   SimulationParams,
-} from "../../types";
+} from "../../types/internal";
 
 type StrategyId = keyof typeof strategies;
 
@@ -22,7 +22,7 @@ const defaultParams: SimulationParams = {
   monthlyCash: 100,
   txCost: 5,
   cooldown: 20,
-  posSize: 20,
+  posSize: 100,
   minPos: 100,
 };
 
@@ -58,7 +58,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h6">{strategies.dca.title}</Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" sx={{ marginTop: "1rem" }}>
               {strategies.dca.description}
             </Typography>
           </Box>
@@ -175,6 +175,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
         <Grid item xs={5}>
           <Box sx={{ textAlign: "center" }}>
             <Select
+              size="small"
               value={strategyId}
               onChange={(e) => {
                 setStrategyId(e.target.value as StrategyId);
@@ -186,7 +187,7 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography variant="body1">
+            <Typography variant="body1" sx={{ marginTop: "1rem" }}>
               {strategies[strategyId].description}
             </Typography>
           </Box>

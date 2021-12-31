@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 
-import { GraphDataPoint, SimulationOutcome } from "../types";
+import { GraphDataPoint, SimulationOutcome } from "../types/internal";
 import { compressData } from "../utils/chartUtils";
 
 const ResultChart = ({

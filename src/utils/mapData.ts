@@ -1,15 +1,10 @@
-import {
-  AlphavantageEmaApiResponse,
-  AlphavantageIndicator,
-  AlphavantagePriceApiResponse,
-  AlphavantageRsiApiResponse,
-  GraphDataPoint,
-} from "../types";
+import { GraphDataPoint } from "../types/internal";
+import { Alphavantage } from "../types/alphavantage";
 
 const parseIndicatorValue = (
-  data: AlphavantageRsiApiResponse | AlphavantageEmaApiResponse,
+  data: Alphavantage.RsiApiResponse | Alphavantage.EmaApiResponse,
   date: string,
-  indicator: AlphavantageIndicator
+  indicator: Alphavantage.Indicator
 ): number | null =>
   // @ts-ignore
   data[`Technical Analysis: ${indicator}`][date]
@@ -17,11 +12,21 @@ const parseIndicatorValue = (
       parseFloat(data[`Technical Analysis: ${indicator}`][date][indicator])
     : null;
 
+const parseMacdValue = (
+  data: Alphavantage.MacdApiResponse,
+  date: string,
+  key: "MACD" | "MACD_Hist" | "MACD_Signal"
+): number | null =>
+  data["Technical Analysis: MACDEXT"][date]
+    ? parseFloat(data["Technical Analysis: MACDEXT"][date][key])
+    : null;
+
 const mapData = (
-  priceData: AlphavantagePriceApiResponse,
-  ema200Data: AlphavantageEmaApiResponse,
-  ema50Data: AlphavantageEmaApiResponse,
-  rsi14Data: AlphavantageRsiApiResponse
+  priceData: Alphavantage.PriceApiResponse,
+  ema200Data: Alphavantage.EmaApiResponse,
+  ema50Data: Alphavantage.EmaApiResponse,
+  rsi14Data: Alphavantage.RsiApiResponse,
+  macdData: Alphavantage.MacdApiResponse
 ): GraphDataPoint[] =>
   Object.keys(priceData["Time Series (Daily)"])
     .reverse()
@@ -31,6 +36,11 @@ const mapData = (
       ema200: parseIndicatorValue(ema200Data, date, "EMA"),
       ema50: parseIndicatorValue(ema50Data, date, "EMA"),
       rsi14: parseIndicatorValue(rsi14Data, date, "RSI"),
+      macd: {
+        hist: parseMacdValue(macdData, date, "MACD_Hist"),
+        ma: parseMacdValue(macdData, date, "MACD"),
+        signal: parseMacdValue(macdData, date, "MACD_Signal"),
+      },
     }))
     .filter(
       (d) => !Object.values(d).some((val) => val === null)

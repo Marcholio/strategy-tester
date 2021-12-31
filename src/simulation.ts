@@ -4,7 +4,7 @@ import {
   SimulationParams,
   Strategy,
   Transaction,
-} from "./types";
+} from "./types/internal";
 
 export const runSimulation = (
   data: GraphDataPoint[],

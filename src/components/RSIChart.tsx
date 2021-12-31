@@ -8,7 +8,7 @@ import {
   XAxis,
 } from "recharts";
 
-import { GraphDataPoint } from "../types";
+import { GraphDataPoint } from "../types/internal";
 import { compressData } from "../utils/chartUtils";
 import indicators from "../utils/technicalIndicators";
 
@@ -27,7 +27,7 @@ const RSIChart = ({ data }: { data: GraphDataPoint[] }) => {
       <Line
         type="monotone"
         dataKey={indicators.rsi14.key}
-        stroke={indicators.rsi14.color}
+        stroke={indicators.rsi14.color[0]}
         yAxisId={0}
         dot={false}
       />

@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Transaction } from "../../types";
+import { Transaction } from "../../types/internal";
 
 const TransactionTable = ({ data }: { data: Transaction[] }) => (
   <Box sx={{ width: "80%", paddingLeft: "10%", marginTop: "1rem" }}>

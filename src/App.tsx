@@ -16,12 +16,14 @@ import RSIChart from "./components/RSIChart";
 import indicators from "./utils/technicalIndicators";
 import mapData from "./utils/mapData";
 
-import sp500Price from "./data/SXR8.FRK-price.json";
-import sp500Ema200 from "./data/SXR8.FRK-EMA-200.json";
-import sp500Ema50 from "./data/SXR8.FRK-EMA-50.json";
-import sp500Rsi14 from "./data/SXR8.FRK-RSI-14.json";
+import priceData from "./data/IBM-price.json";
+import ema200Data from "./data/IBM-EMA-200.json";
+import ema50Data from "./data/IBM-EMA-50.json";
+import rsi14Data from "./data/IBM-RSI-14.json";
+import macdData from "./data/IBM-MACDEXT.json";
 
 import "./App.css";
+import MACDChart from "./components/MACDChart";
 
 const App = () => {
   const [selectedIndicators, setSelectedIndicators] = useState(
@@ -38,7 +40,7 @@ const App = () => {
     });
   };
 
-  const data = mapData(sp500Price, sp500Ema200, sp500Ema50, sp500Rsi14);
+  const data = mapData(priceData, ema200Data, ema50Data, rsi14Data, macdData);
 
   return (
     <>
@@ -48,9 +50,10 @@ const App = () => {
           <Chart
             data={data}
             selectedIndicators={selectedIndicators}
-            omitIndicators={[indicators.rsi14.key]}
+            omitIndicators={[indicators.rsi14.key, indicators.macd.key]}
           />
           {selectedIndicators[indicators.rsi14.key] && <RSIChart data={data} />}
+          {selectedIndicators[indicators.macd.key] && <MACDChart data={data} />}
         </Grid>
         <Grid item xs={2}>
           <Typography variant={"h6"}>Technical indicators</Typography>

@@ -10,7 +10,7 @@ import {
 
 import indicators from "../utils/technicalIndicators";
 
-import { GraphDataPoint } from "../types";
+import { GraphDataPoint } from "../types/internal";
 import { compressData } from "../utils/chartUtils";
 
 const lineIndicator = (key: string) => {
@@ -21,7 +21,7 @@ const lineIndicator = (key: string) => {
         key={key}
         type="monotone"
         dataKey={indicator.key}
-        stroke={indicator.color}
+        stroke={indicator.color[0]}
         yAxisId={0}
         dot={false}
       />

@@ -1,7 +1,4 @@
-import { Strategy } from "./types";
-
-// TODO: Add more strategies,eg.
-// MACD
+import { Strategy } from "./types/internal";
 
 // TODO: Add support for custom strategies
 
@@ -51,7 +48,19 @@ export const rsi14Strategy: Strategy = {
   title: "RSI 14 Strategy",
   description: "Buy when RSI breaks above 30, sell when RSI is breaks below 70",
   buy: (prev, cur) => prev.rsi14 < 30 && cur.rsi14 >= 30,
-  sell: (prev, cur) => false, // prev.rsi14 > 70 && cur.rsi14 <= 70,
+  sell: (prev, cur) => prev.rsi14 > 70 && cur.rsi14 <= 70,
+};
+
+/**
+ * Moving average convergence divergence based strategy.
+ * https://www.investopedia.com/articles/forex/05/macddiverge.asp
+ */
+export const macdStrategy: Strategy = {
+  title: "MACD Strategy",
+  description:
+    "Buy when MACD histogram turns positive, sell when it turns negative",
+  buy: (prev, cur) => prev.macd.hist <= 0 && cur.macd.hist > 0,
+  sell: (prev, cur) => prev.macd.hist >= 0 && cur.macd.hist < 0,
 };
 
 /**
@@ -69,6 +78,7 @@ const strategies = {
   ema200: ema200Strategy,
   ema50: ema50Strategy,
   rsi14: rsi14Strategy,
+  macd: macdStrategy,
   random: randomStrategy,
 };
 

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { SimulationOutcome } from "../../types";
+import { SimulationOutcome } from "../../types/internal";
 
 const TotalResult = ({ outcome }: { outcome: SimulationOutcome }) => (
   <Box sx={{ width: "50%", paddingLeft: "25%" }}>
