@@ -53,11 +53,11 @@ const updateToFunction = (update: FunctionUpdate): BuyOrSellFunc => {
 const functionToUpdate = (func: BuyOrSellFunc): FunctionUpdate => {
   const funcAsString = func.toString();
 
-  if (funcAsString === never) {
+  if (funcAsString === never || funcAsString.includes("return!1")) {
     return { main: "never" };
   }
 
-  if (funcAsString === always) {
+  if (funcAsString === always || funcAsString.includes("return!0")) {
     return { main: "always" };
   }
 
