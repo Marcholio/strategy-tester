@@ -7,13 +7,15 @@ import { runSimulation } from "../../simulation";
 import strategies from "../../strategies";
 import TotalResult from "./TotalResult";
 import TransactionTable from "./TransactionTable";
-import ResultChart from "../ResultChart";
+import ResultChart from "./ResultChart";
 
 import {
   GraphDataPoint,
   SimulationOutcome,
   SimulationParams,
+  Strategy,
 } from "../../types/internal";
+import CustomStrategyCreator from "./CustomStrategyCreator";
 
 type StrategyId = keyof typeof strategies;
 
@@ -33,18 +35,20 @@ const paramFieldStyle = {
 const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
   const [outcome1, setOutcome1] = useState<SimulationOutcome>();
   const [outcome2, setOutcome2] = useState<SimulationOutcome>();
-
   const [simulationRunning, setSimulationRunning] = useState<boolean>(false);
-
   const [params, setParams] = useState<SimulationParams>(defaultParams);
-
   const [strategyId, setStrategyId] = useState<StrategyId>("ema200");
+  const [customStrategy, setCustomStrategy] = useState<Strategy>(
+    strategies.custom
+  );
 
   const startSimulation = () => {
+    const allStrategies = { ...strategies, custom: customStrategy };
+
     setSimulationRunning(true);
 
     const dcaOutcome = runSimulation(data, strategies.dca, params);
-    const outcome2 = runSimulation(data, strategies[strategyId], params);
+    const outcome2 = runSimulation(data, allStrategies[strategyId], params);
 
     setOutcome1(dcaOutcome);
     setOutcome2(outcome2);
@@ -190,6 +194,14 @@ const Simulation = ({ data }: { data: GraphDataPoint[] }) => {
             <Typography variant="body1" sx={{ marginTop: "1rem" }}>
               {strategies[strategyId].description}
             </Typography>
+            {strategyId === "custom" && (
+              <CustomStrategyCreator
+                strategy={customStrategy}
+                onSave={(newStrategy: Strategy) =>
+                  setCustomStrategy(newStrategy)
+                }
+              />
+            )}
           </Box>
         </Grid>
       </Grid>

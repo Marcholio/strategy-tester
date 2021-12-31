@@ -5,13 +5,22 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { SimulationOutcome } from "../../types/internal";
 
 const TotalResult = ({ outcome }: { outcome: SimulationOutcome }) => (
-  <Box sx={{ width: "50%", paddingLeft: "25%" }}>
+  <Box
+    sx={{
+      width: "50%",
+      paddingLeft: "25%",
+      textAlign: "center",
+      marginBottom: "2rem",
+    }}
+  >
+    <Typography variant="h6">Result</Typography>
     <TableContainer>
       <Table size="small">
         <TableBody>

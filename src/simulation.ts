@@ -51,7 +51,7 @@ export const runSimulation = (
     if (strategy.buy(data[index - 1], datapoint) && canBuy) {
       if (cash > params.txCost && cooldownCounter <= 0) {
         cooldownCounter = params.cooldown;
-        cash -= params.txCost; // TODO: Implement percentage based price
+        cash -= params.txCost;
 
         const sharesBought = ((params.posSize / 100) * cash) / datapoint.price;
 

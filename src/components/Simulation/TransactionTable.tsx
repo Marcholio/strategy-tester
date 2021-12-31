@@ -6,12 +6,21 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Transaction } from "../../types/internal";
 
 const TransactionTable = ({ data }: { data: Transaction[] }) => (
-  <Box sx={{ width: "80%", paddingLeft: "10%", marginTop: "1rem" }}>
+  <Box
+    sx={{
+      width: "80%",
+      paddingLeft: "10%",
+      marginTop: "1rem",
+      textAlign: "center",
+    }}
+  >
+    <Typography variant="h6">Transactions</Typography>
     <TableContainer>
       <Table size="small">
         <TableHead>

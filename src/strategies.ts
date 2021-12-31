@@ -73,6 +73,13 @@ export const randomStrategy: Strategy = {
   sell: (prev, cur) => Math.random() < 0.05,
 };
 
+export const customStrategy: Strategy = {
+  title: "Custom strategy",
+  description: "Create your own strategy and test it",
+  buy: () => false,
+  sell: () => false,
+};
+
 const strategies = {
   dca: dollarCostAveraging,
   ema200: ema200Strategy,
@@ -80,6 +87,7 @@ const strategies = {
   rsi14: rsi14Strategy,
   macd: macdStrategy,
   random: randomStrategy,
+  custom: customStrategy,
 };
 
 export default strategies;
